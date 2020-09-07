@@ -5,12 +5,14 @@ interface
 uses
   IniFiles, System.SysUtils, System.Classes, Data.FMTBcd, Data.DB, Data.SqlExpr,
   Windows, Messages, Variants, Graphics,
-  Controls, Forms, Dialogs, StdCtrls, Buttons, Data.DBXMSSQL;
+  Controls, Forms, Dialogs, StdCtrls, Buttons, Data.DBXMSSQL, Datasnap.DBClient,
+  SimpleDS;
 
 type
   TDmPrincipal = class(TDataModule)
     SQLConn: TSQLConnection;
     SQLDsConsulta: TSQLDataSet;
+    SQLDsAux: TSQLDataSet;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

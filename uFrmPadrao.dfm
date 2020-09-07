@@ -10,10 +10,12 @@ object FrmPadrao: TFrmPadrao
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object PanelBotoes: TPanel
@@ -190,10 +192,14 @@ object FrmPadrao: TFrmPadrao
       Top = 0
       Width = 450
       Height = 297
-      ActivePage = TabSheet1
+      ActivePage = TabSheet2
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'TabSheet1'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object DBGridDados: TDBGrid
           AlignWithMargins = True
           Left = 3

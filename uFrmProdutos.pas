@@ -17,7 +17,10 @@ type
     DataSetProvider: TDataSetProvider;
     cdsPesqDescricao: TStringField;
     cdsAux: TClientDataSet;
-    cdsAuxCodigo: TIntegerField;
+    cdsPesqCodigo: TIntegerField;
+    dbEditCodigo: TDBEdit;
+    Label1: TLabel;
+    cdsAuxPed: TClientDataSet;
     procedure BtnConfirmaClick(Sender: TObject);
     procedure BtnNovoClick(Sender: TObject);
     procedure BtnEditaClick(Sender: TObject);
@@ -27,6 +30,7 @@ type
     procedure PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
     procedure EditPesqNomeChange(Sender: TObject);
   private
+    pProxCodigo: String;
     function Validacao: Boolean;
     { Private declarations }
   public
@@ -78,8 +82,8 @@ begin
       inherited;
     finally
       Crud.Free;
-      cdsPesq.Close;
-      cdsPesq.Open;
+      //cdsPesq.Close;
+      //cdsPesq.Open;
       PageControl1.ActivePage := TabSheet1;
     end;
   end;
@@ -87,10 +91,21 @@ end;
 
 procedure TFrmCadProdutos.BtnNovoClick(Sender: TObject);
 begin
-  inherited;
   PageControl1.ActivePage := TabSheet2;
   pInsere := True;
   inherited;
+  cdsAux.Close;
+  cdsAux.CommandText := 'DECLARE @NextId INT '+
+                        'SET @NextId = IDENT_CURRENT(''PRODUTOS'') + 1 '+
+                        'SELECT @NextId as ProxCod ';
+  cdsAux.Open;
+  pProxCodigo := cdsAux.FieldByName('ProxCod').AsString;
+  if pProxCodigo <> '' then
+    begin
+      dbEditCodigo.Text     := pProxCodigo;
+      dbEditCodigo.ReadOnly := True;
+      dbEditCodigo.Enabled  := False;
+    end;
 
   dbEditDescricao.SetFocus;
   pMudaTab := True;
@@ -119,13 +134,23 @@ begin
     cdsAux.CommandText := 'SELECT CODIGO FROM PRODUTOS WHERE DESCRICAO = '+QuotedStr(cdsPesqDescricao.AsString);
     cdsAux.Open;
 
-    Crud        := TProdutoCrud.Create(DmPrincipal);
-    Crud.Codigo := cdsAux.FieldByName('CODIGO').AsString;
-    PageControl1.ActivePage := TabSheet2;
-    pMudaTab := True;
-
-    inherited;
-    Crud.Exclui;
+    cdsAuxPed.Close;
+    cdsAuxPed.CommandText := 'SELECT COD_PRODUTO FROM ITEMPED WHERE COD_PRODUTO = :pCodProduto';
+    cdsAuxPed.Params.ParamByName('pCodProduto').AsInteger := cdsAux.FieldByName('CODIGO').AsInteger;
+    cdsAuxPed.Open;
+    if cdsAuxPed.RecordCount > 0 then
+    begin
+      MessageDlg('Produto associado a um PEDIDO, não pode ser excluido.',mtWarning,[mbOK],0);
+    end
+    else
+    begin
+      Crud        := TProdutoCrud.Create(DmPrincipal);
+      Crud.Codigo := cdsAux.FieldByName('CODIGO').AsString;
+      PageControl1.ActivePage := TabSheet2;
+      pMudaTab    := True;
+      inherited;
+      Crud.Exclui;
+    end;
   finally
     PageControl1.ActivePage := TabSheet1;
   end;

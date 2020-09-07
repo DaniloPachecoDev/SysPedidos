@@ -35,24 +35,29 @@ object FrmPrincipal: TFrmPrincipal
       end
       object Sair1: TMenuItem
         Caption = 'Sair'
+        OnClick = Sair1Click
       end
     end
     object Movimentos1: TMenuItem
       Caption = 'Movimentos'
-      object NotasFiscais1: TMenuItem
+      object Pedidos1: TMenuItem
         Caption = 'Pedidos'
-        object Sadas1: TMenuItem
-          Caption = 'Sa'#237'das'
-        end
-        object Entradas1: TMenuItem
-          Caption = 'Entradas'
-        end
+        OnClick = Pedidos1Click
       end
     end
     object Relatrios1: TMenuItem
       Caption = 'Relat'#243'rios'
-      object NotasFiscais2: TMenuItem
-        Caption = 'Notas Fiscais'
+      object Clientes2: TMenuItem
+        Caption = 'Clientes'
+        OnClick = Clientes2Click
+      end
+      object Produtos2: TMenuItem
+        Caption = 'Produtos'
+        OnClick = Produtos2Click
+      end
+      object Pedidos2: TMenuItem
+        Caption = 'Pedidos'
+        OnClick = Pedidos2Click
       end
     end
   end

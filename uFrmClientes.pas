@@ -1,3 +1,6 @@
+//  if not (key in ['1','2','3','4','5','6','7','8','9','0']) then
+//    key :=#0;
+
 unit uFrmClientes;
 
 interface
@@ -12,7 +15,6 @@ uses
 type
   TFrmCadCliente = class(TFrmPadrao)
     dbEditNome: TDBEdit;
-    dbEditInscricao: TDBEdit;
     lblNome: TLabel;
     lblInscricao: TLabel;
     dsData: TDataSource;
@@ -22,6 +24,10 @@ type
     cdsPesqInscricao: TStringField;
     cdsAux: TClientDataSet;
     cdsAuxCodigo: TIntegerField;
+    cdsAuxPed: TClientDataSet;
+    edtCNPJCPF: TEdit;
+    cdsAuxINSCRICAO: TStringField;
+    cdsPesqCodigo: TIntegerField;
     procedure FormShow(Sender: TObject);
     procedure BtnNovoClick(Sender: TObject);
     procedure BtnConfirmaClick(Sender: TObject);
@@ -30,9 +36,8 @@ type
     procedure BtnCancelaClick(Sender: TObject);
     procedure PageControl1Changing(Sender: TObject; var AllowChange: Boolean);
     procedure EditPesqNomeChange(Sender: TObject);
-    procedure dbEditInscricaoKeyPress(Sender: TObject; var Key: Char);
-    procedure dbEditInscricaoEnter(Sender: TObject);
-    procedure dbEditInscricaoExit(Sender: TObject);
+    procedure edtCNPJCPFEnter(Sender: TObject);
+    procedure edtCNPJCPFExit(Sender: TObject);
   private
     function VerificaCnpj(pInscricao: String): Boolean;  // Funções oriundas da internet para validação de CNPJ
     function VerificaCpf(pInscricao:String): Boolean;    // Funções oriundas da internet para validação de CPF
@@ -61,7 +66,7 @@ begin
     try
       Crud := TClienteCrud.Create(DmPrincipal);
       Crud.Razao     := dbEditNome.Text;
-      Crud.Inscricao := dbEditInscricao.Text;
+      Crud.Inscricao := edtCNPJCPF.Text;
       if pInsere then
       begin
         if Crud.Insere then
@@ -100,9 +105,10 @@ begin
   pInsere := False;
   // Pega o código do cliente a parte devido ao mesmo ser IDENTITY
   cdsAux.Close;
-  cdsAux.CommandText := 'SELECT CODIGO FROM CLIENTES WHERE INSCRICAO = '+QuotedStr(cdsPesqInscricao.AsString);
+  cdsAux.CommandText := 'SELECT CODIGO, INSCRICAO FROM CLIENTES WHERE INSCRICAO = '+QuotedStr(cdsPesqInscricao.AsString);
   cdsAux.Open;
 
+  edtCNPJCPF.Text := cdsAux.FieldByName('INSCRICAO').AsString;
   inherited;
 end;
 
@@ -113,16 +119,29 @@ begin
   try
     // Pega o código do cliente a parte devido ao mesmo ser IDENTITY
     cdsAux.Close;
-    cdsAux.CommandText := 'SELECT CODIGO FROM CLIENTES WHERE INSCRICAO = '+QuotedStr(cdsPesqInscricao.AsString);
+    cdsAux.CommandText := 'SELECT CODIGO, INSCRICAO FROM CLIENTES WHERE INSCRICAO = '+QuotedStr(cdsPesqInscricao.AsString);
     cdsAux.Open;
 
-    Crud        := TClienteCrud.Create(DmPrincipal);
-    Crud.Codigo := cdsAux.FieldByName('CODIGO').AsString;
-    PageControl1.ActivePage := TabSheet2;
-    pMudaTab := True;
+     // Verifica se não há um pedido com o cliente para evitar erros
+    cdsAuxPed.Close;
+    cdsAuxPed.CommandText := 'SELECT COD_CLIENTE FROM PEDIDO WHERE COD_CLIENTE = :pCodCliente';
+    cdsAuxPed.Params.ParamByName('pCodCliente').AsInteger := cdsAux.FieldByName('CODIGO').AsInteger;
+    cdsAuxPed.Open;
+    if cdsAuxPed.RecordCount > 0 then
+    begin
+      MessageDlg('Cliente associado a um PEDIDO, não pode ser excluido.',mtWarning,[mbOK],0);
+    end
+    else
+    begin
+      Crud        := TClienteCrud.Create(DmPrincipal);
+      Crud.Codigo := cdsAux.FieldByName('CODIGO').AsString;
+      edtCNPJCPF.Text := cdsAux.FieldByName('INSCRICAO').AsString;
+      PageControl1.ActivePage := TabSheet2;
+      pMudaTab := True;
 
-    inherited;
-    Crud.Exclui;
+      inherited;
+      Crud.Exclui;
+    end;
   finally
     PageControl1.ActivePage := TabSheet1;
   end;
@@ -138,7 +157,7 @@ end;
 procedure TFrmCadCliente.EditPesqNomeChange(Sender: TObject);
 begin
   try
-    cdsPesq.Locate('RAZAO',EditPesqNome.Text,[loPartialKey]);
+    cdsPesq.Locate('Razao',EditPesqNome.Text,[loPartialKey]);
     inherited;
   finally
    //
@@ -158,15 +177,6 @@ begin
   inherited;
   AllowChange := pMudaTab;
 end;
-
-procedure TFrmCadCliente.dbEditInscricaoKeyPress(Sender: TObject;
-  var Key: Char);
-begin
-  inherited;
-  if not (key in ['1','2','3','4','5','6','7','8','9','0']) then
-    key :=#0;
-end;
-
 
 function TFrmCadCliente.VerificaCnpj(pInscricao: String): Boolean;
 var
@@ -230,74 +240,6 @@ begin
     Result := false;
 end;
 
-procedure TFrmCadCliente.dbEditInscricaoEnter(Sender: TObject);
-var
- I: integer;
- S, Texto: string;
-begin
-  S := '';
-  Texto := dbEditInscricao.Text;
-
-   for I := 1 to Length(Texto) do
-    begin
-    if (Texto[I] in ['0'..'9']) then
-     begin
-      S := S + Copy(Texto, I, 1);
-     end;
-   end;
-   dbEditInscricao.Text := S;
-end;
-
-procedure TFrmCadCliente.dbEditInscricaoExit(Sender: TObject);
-var
-  FormatarCNPJ:String;
-  FormatarCPF:String;
-begin
-  if Length(dbEditInscricao.Text) <> 0 then
-  begin
-    if Length(dbEditInscricao.Text) = 14 then
-    begin
-      if VerificaCnpj(dbEditInscricao.Text) then
-      begin
-        FormatarCNPJ:= Copy(dbEditInscricao.Text, 1,2)
-                       + '.' + Copy(dbEditInscricao.Text, 3,3)
-                       +'.' + Copy(dbEditInscricao.Text, 6,3)
-                       + '/' +Copy(dbEditInscricao.Text, 9,4)
-                       + '-' + Copy(dbEditInscricao.Text, 13,2);
-        dbEditInscricao.Text:= FormatarCNPJ;
-      end
-      else
-      begin
-        ShowMessage('CNPJ com erro. favor verificar');
-        dbEditInscricao.SetFocus;
-      end;
-    end
-    else
-    if Length(dbEditInscricao.Text) = 11 then
-    begin
-      if VerificaCpf(dbEditInscricao.Text) Then
-      begin
-        formatarCPF:= Copy(dbEditInscricao.Text, 1,3)
-                      + '.' + Copy(dbEditInscricao.Text, 4,3)
-                      + '.' + Copy(dbEditInscricao.Text,7,3)
-                      + '-' + Copy(dbEditInscricao.Text, 10,2);
-        dbEditInscricao.Text:= FormatarCPF;
-      end
-      else
-      begin
-       ShowMessage('CPF com erro. favor verificar');
-       dbEditInscricao.SetFocus;
-      end;
-    end
-    else
-    begin
-     ShowMessage('O CPF tem 11 digitos e CNPJ tem 14 digitos.'#13'Preencha corretamente');
-     dbEditInscricao.SetFocus;
-     dbEditInscricao.SelectAll;
-    end;
-  end;
-end;
-
 function TFrmCadCliente.Validacao: Boolean;
 begin
   Result := True;
@@ -308,12 +250,80 @@ begin
     Result := False;
   end
   else
-  if dbEditInscricao.Text = '' then
+  if edtCNPJCPF.Text = '' then
   begin
     ShowMessage('Campo CPF/CNPJ inválido');
-    dbEditInscricao.SetFocus;
+    edtCNPJCPF.SetFocus;
     Result := False;
   end
+end;
+
+procedure TFrmCadCliente.edtCNPJCPFEnter(Sender: TObject);
+var
+ I: integer;
+ S, Texto: string;
+begin
+  S := '';
+  Texto := edtCNPJCPF.Text;
+
+   for I := 1 to Length(Texto) do
+    begin
+    if (Texto[I] in ['0'..'9']) then
+     begin
+      S := S + Copy(Texto, I, 1);
+     end;
+   end;
+   edtCNPJCPF.Text := S;
+end;
+
+procedure TFrmCadCliente.edtCNPJCPFExit(Sender: TObject);
+var
+  FormatarCNPJ:String;
+  FormatarCPF:String;
+begin
+  if Length(edtCNPJCPF.Text) <> 0 then
+  begin
+    if Length(edtCNPJCPF.Text) = 14 then
+    begin
+      if VerificaCnpj(edtCNPJCPF.Text) then
+      begin
+        FormatarCNPJ:= Copy(edtCNPJCPF.Text, 1,2)
+                       + '.' + Copy(edtCNPJCPF.Text, 3,3)
+                       +'.' + Copy(edtCNPJCPF.Text, 6,3)
+                       + '/' +Copy(edtCNPJCPF.Text, 9,4)
+                       + '-' + Copy(edtCNPJCPF.Text, 13,2);
+        edtCNPJCPF.Text:= FormatarCNPJ;
+      end
+      else
+      begin
+        ShowMessage('CNPJ com erro. favor verificar');
+        edtCNPJCPF.SetFocus;
+      end;
+    end
+    else
+    if Length(edtCNPJCPF.Text) = 11 then
+    begin
+      if VerificaCpf(edtCNPJCPF.Text) Then
+      begin
+        formatarCPF:= Copy(edtCNPJCPF.Text, 1,3)
+                      + '.' + Copy(edtCNPJCPF.Text, 4,3)
+                      + '.' + Copy(edtCNPJCPF.Text,7,3)
+                      + '-' + Copy(edtCNPJCPF.Text, 10,2);
+        edtCNPJCPF.Text:= FormatarCPF;
+      end
+      else
+      begin
+       ShowMessage('CPF com erro. favor verificar');
+       edtCNPJCPF.SetFocus;
+      end;
+    end
+    else
+    begin
+     ShowMessage('O CPF tem 11 digitos e CNPJ tem 14 digitos.'#13'Preencha corretamente');
+     edtCNPJCPF.SetFocus;
+     edtCNPJCPF.SelectAll;
+    end;
+  end;
 end;
 
 end.

@@ -2,22 +2,27 @@ program SisPedidos;
 
 uses
   Vcl.Forms,
-  uFrmPrincipal in 'C:\SisPedidos\uFrmPrincipal.pas' {FrmPrincipal},
-  uDados in 'C:\SisPedidos\uDados.pas' {DmPrincipal: TDataModule},
+  uFrmPrincipal in 'uFrmPrincipal.pas' {FrmPrincipal},
+  uDados in 'uDados.pas' {DmPrincipal: TDataModule},
   Vcl.Themes,
   Vcl.Styles,
-  uCrudCliente in 'C:\SisPedidos\uCrudCliente.pas',
-  uFrmPadrao in 'C:\SisPedidos\uFrmPadrao.pas' {FrmPadrao},
-  uFrmClientes in 'C:\SisPedidos\uFrmClientes.pas' {FrmCadCliente},
-  uCrudProduto in 'C:\SisPedidos\uCrudProduto.pas',
-  uFrmProdutos in 'C:\SisPedidos\uFrmProdutos.pas' {FrmCadProdutos};
+  uCrudCliente in 'uCrudCliente.pas',
+  uFrmPadrao in 'uFrmPadrao.pas' {FrmPadrao},
+  uFrmClientes in 'uFrmClientes.pas' {FrmCadCliente},
+  uCrudProduto in 'uCrudProduto.pas',
+  uFrmProdutos in 'uFrmProdutos.pas' {FrmCadProdutos},
+  uFrmPedidos in 'uFrmPedidos.pas' {FrmPedidos},
+  uCrudPedidos in 'uCrudPedidos.pas',
+  uFrmRelPedidos in 'uFrmRelPedidos.pas' {FrmRelPedidos},
+  uFrmRelClientes in 'uFrmRelClientes.pas' {FrmRelClientes},
+  uFrmRelProdutos in 'uFrmRelProdutos.pas' {FrmRelProdutos};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.Title := 'Emissão de Pedidos';
+  Application.Title := 'Sistema de Pedidos';
   TStyleManager.TrySetStyle('Amethyst Kamri');
   Application.CreateForm(TDmPrincipal, DmPrincipal);
   Application.CreateForm(TFrmPrincipal, FrmPrincipal);

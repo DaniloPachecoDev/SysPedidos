@@ -34,6 +34,7 @@ type
     procedure BtnSairClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormShow(Sender: TObject);
   private
     procedure Habilita;
     procedure HabilitaComponentes(pStatus: Boolean);
@@ -72,8 +73,13 @@ end;
 
 procedure TFrmPadrao.FormKeyPress(Sender: TObject; var Key: Char);
 begin
-  if key = chr(27) then
+  if Key = chr(27) then
     Close;
+end;
+
+procedure TFrmPadrao.FormShow(Sender: TObject);
+begin
+  PageControl1.ActivePage := TabSheet1;
 end;
 
 procedure TFrmPadrao.BtnCancelaClick(Sender: TObject);
@@ -104,10 +110,12 @@ begin
 end;
 
 procedure TFrmPadrao.BtnExcluirClick(Sender: TObject);
+var
+  Resp: Integer;
 begin
-  if MessageDlg('Deseja Excluir o registro?', mtconfirmation, [mbYes, mbNo], 0) = mrYes then
-  begin
-    dsPadrao.dataset.delete;
+  Resp := MessageBoxEx(Handle,'Deseja Excluir o registro?', 'Confirmação', MB_YESNO,LANG_PORTUGUESE);
+  case Resp of
+    IDYES: dsPadrao.dataset.delete;
   end;
 
   Habilita;

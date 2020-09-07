@@ -1,21 +1,23 @@
 inherited FrmCadCliente: TFrmCadCliente
   Caption = 'Clientes'
+  ClientWidth = 625
   FormStyle = fsMDIChild
+  Position = poOwnerFormCenter
   Visible = True
-  OnShow = FormShow
+  ExplicitWidth = 641
   PixelsPerInch = 96
   TextHeight = 13
   inherited PanelBotoes: TPanel
-    inherited BtnSair: TBitBtn
-      OnClick = BtnSairClick
-    end
+    Left = 489
   end
   inherited PanelPrincipal: TPanel
+    Width = 489
     inherited PageControl1: TPageControl
       Left = 1
       Top = 1
-      Width = 454
+      Width = 487
       Height = 337
+      ActivePage = TabSheet1
       Align = alClient
       TabHeight = 1
       TabPosition = tpBottom
@@ -23,30 +25,33 @@ inherited FrmCadCliente: TFrmCadCliente
       OnChanging = PageControl1Changing
       ExplicitLeft = 1
       ExplicitTop = 1
-      ExplicitWidth = 454
+      ExplicitWidth = 487
       ExplicitHeight = 337
       inherited TabSheet1: TTabSheet
         Caption = ''
-        ExplicitLeft = 3
-        ExplicitTop = 0
-        ExplicitWidth = 446
+        ExplicitLeft = 4
+        ExplicitTop = 4
+        ExplicitWidth = 479
         ExplicitHeight = 328
         inherited DBGridDados: TDBGrid
-          Width = 440
+          Width = 473
           Height = 281
+          Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           ReadOnly = True
         end
         inherited PnlCabecalho: TPanel
-          Width = 446
-          ExplicitWidth = 446
+          Width = 479
+          ExplicitWidth = 479
           inherited EditPesqNome: TEdit
-            Width = 444
-            ExplicitWidth = 444
+            Width = 477
+            OnChange = EditPesqNomeChange
+            ExplicitWidth = 477
           end
         end
       end
       inherited TabSheet2: TTabSheet
         Caption = ''
+        ExplicitLeft = 4
         ExplicitTop = 4
         ExplicitWidth = 446
         ExplicitHeight = 328
@@ -65,11 +70,11 @@ inherited FrmCadCliente: TFrmCadCliente
           Caption = 'CPF / CNPJ'
         end
         inherited BtnConfirma: TBitBtn
-          Left = 16
-          Top = 118
+          Left = 322
+          Top = 113
           TabOrder = 2
-          ExplicitLeft = 16
-          ExplicitTop = 118
+          ExplicitLeft = 322
+          ExplicitTop = 113
         end
         object dbEditNome: TDBEdit
           Left = 16
@@ -80,21 +85,15 @@ inherited FrmCadCliente: TFrmCadCliente
           DataSource = dsPadrao
           TabOrder = 0
         end
-        object dbEditInscricao: TDBEdit
+        object edtCNPJCPF: TEdit
           Left = 16
-          Top = 82
-          Width = 201
+          Top = 80
+          Width = 177
           Height = 21
-          Hint = 'Preencha apenas com os numeros.'
-          DataField = 'Inscricao'
-          DataSource = dsPadrao
-          MaxLength = 14
-          ParentShowHint = False
-          ShowHint = True
+          NumbersOnly = True
           TabOrder = 1
-          OnEnter = dbEditInscricaoEnter
-          OnExit = dbEditInscricaoExit
-          OnKeyPress = dbEditInscricaoKeyPress
+          OnEnter = edtCNPJCPFEnter
+          OnExit = edtCNPJCPFExit
         end
       end
     end
@@ -116,11 +115,15 @@ inherited FrmCadCliente: TFrmCadCliente
   object cdsPesq: TClientDataSet
     Aggregates = <>
     AutoCalcFields = False
-    CommandText = 'SELECT RAZAO, INSCRICAO FROM CLIENTES'
+    CommandText = 'SELECT CODIGO, RAZAO, INSCRICAO FROM CLIENTES'
     Params = <>
     ProviderName = 'DataSetProvider'
     Left = 332
     Top = 152
+    object cdsPesqCodigo: TIntegerField
+      DisplayWidth = 6
+      FieldName = 'Codigo'
+    end
     object cdsPesqRazao: TStringField
       DisplayLabel = 'Raz'#227'o Social'
       DisplayWidth = 45
@@ -134,7 +137,7 @@ inherited FrmCadCliente: TFrmCadCliente
   end
   object cdsAux: TClientDataSet
     Aggregates = <>
-    CommandText = 'SELECT CODIGO FROM CLIENTES'
+    CommandText = 'SELECT CODIGO, INSCRICAO FROM CLIENTES'
     Params = <>
     ProviderName = 'DataSetProvider'
     Left = 220
@@ -142,5 +145,16 @@ inherited FrmCadCliente: TFrmCadCliente
     object cdsAuxCodigo: TIntegerField
       FieldName = 'Codigo'
     end
+    object cdsAuxINSCRICAO: TStringField
+      FieldName = 'INSCRICAO'
+      Size = 30
+    end
+  end
+  object cdsAuxPed: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'DataSetProvider'
+    Left = 317
+    Top = 77
   end
 end
