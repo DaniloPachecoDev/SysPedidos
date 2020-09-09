@@ -12,9 +12,11 @@ object FrmRelClientes: TFrmRelClientes
   Font.Name = 'Tahoma'
   Font.Style = []
   FormStyle = fsMDIChild
+  KeyPreview = True
   OldCreateOrder = False
   Visible = True
   OnClose = FormClose
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -168,7 +170,7 @@ object FrmRelClientes: TFrmRelClientes
     end
   end
   object dspClientes: TDataSetProvider
-    DataSet = DmPrincipal.SQLDsConsulta
+    DataSet = DmPrincipal.QryConsulta
     Options = [poAutoRefresh, poAllowCommandText, poUseQuoteChar]
     Left = 216
     Top = 16

@@ -93,7 +93,7 @@ begin
   PageControl1.ActivePage := TabSheet2;
   pInsere := True;
   inherited;
-
+  edtCNPJCPF.Text := '';
   dbEditNome.SetFocus;
   pMudaTab := True;
 end;

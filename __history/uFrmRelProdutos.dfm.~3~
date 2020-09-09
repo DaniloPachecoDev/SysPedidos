@@ -1,6 +1,7 @@
 object FrmRelProdutos: TFrmRelProdutos
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu]
   Caption = 'Relat'#243'rio de Produtos'
   ClientHeight = 255
   ClientWidth = 557
@@ -10,7 +11,11 @@ object FrmRelProdutos: TFrmRelProdutos
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  FormStyle = fsMDIChild
+  KeyPreview = True
   OldCreateOrder = False
+  Visible = True
+  OnClose = FormClose
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -48,6 +53,7 @@ object FrmRelProdutos: TFrmRelProdutos
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     TabOrder = 0
+    OnClick = btnFecharClick
   end
   object DBGridDados: TDBGrid
     Left = 0
@@ -55,6 +61,7 @@ object FrmRelProdutos: TFrmRelProdutos
     Width = 557
     Height = 217
     Align = alTop
+    DataSource = dsProduto
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -96,6 +103,7 @@ object FrmRelProdutos: TFrmRelProdutos
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     TabOrder = 2
+    OnClick = btnImprimirClick
   end
   object btnImprimeTodos: TBitBtn
     Left = 455
@@ -136,17 +144,18 @@ object FrmRelProdutos: TFrmRelProdutos
   object cdsProdutoSel: TClientDataSet
     Aggregates = <>
     Params = <>
-    ProviderName = 'dspClientes'
+    ProviderName = 'dspProdutos'
     Left = 168
     Top = 40
     object cdsProdutoSelCODIGO: TIntegerField
+      DisplayLabel = 'Codigo'
       FieldName = 'CODIGO'
     end
-    object cdsProdutoSelRAZAO: TStringField
-      FieldName = 'RAZAO'
-    end
-    object cdsProdutoSelINSCRICAO: TStringField
-      FieldName = 'INSCRICAO'
+    object cdsProdutoSelDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      DisplayWidth = 30
+      FieldName = 'DESCRICAO'
+      Size = 30
     end
   end
   object dsProdutoSel: TDataSource
@@ -155,7 +164,7 @@ object FrmRelProdutos: TFrmRelProdutos
     Top = 104
   end
   object dspProdutos: TDataSetProvider
-    DataSet = DmPrincipal.SQLDsConsulta
+    DataSet = DmPrincipal.QryConsulta
     Options = [poAutoRefresh, poAllowCommandText, poUseQuoteChar]
     Left = 216
     Top = 16
@@ -163,7 +172,7 @@ object FrmRelProdutos: TFrmRelProdutos
   object cdsProduto: TClientDataSet
     Aggregates = <>
     Params = <>
-    ProviderName = 'dspClientes'
+    ProviderName = 'dspProdutos'
     Left = 248
     Top = 48
     object cdsProdutoCODIGO: TIntegerField
@@ -171,7 +180,10 @@ object FrmRelProdutos: TFrmRelProdutos
       FieldName = 'CODIGO'
     end
     object cdsProdutoDESCRICAO: TStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      DisplayWidth = 30
       FieldName = 'DESCRICAO'
+      Size = 30
     end
   end
   object dsProduto: TDataSource
@@ -195,22 +207,12 @@ object FrmRelProdutos: TFrmRelProdutos
       Sortable = False
     end
     object ppDBPipeline1ppField2: TppField
-      FieldAlias = 'RAZAO'
-      FieldName = 'RAZAO'
+      FieldAlias = 'DESCRICAO'
+      FieldName = 'DESCRICAO'
       FieldLength = 0
       DataType = dtNotKnown
       DisplayWidth = 0
       Position = 1
-      Searchable = False
-      Sortable = False
-    end
-    object ppDBPipeline1ppField3: TppField
-      FieldAlias = 'INSCRICAO'
-      FieldName = 'INSCRICAO'
-      FieldLength = 0
-      DataType = dtNotKnown
-      DisplayWidth = 0
-      Position = 2
       Searchable = False
       Sortable = False
     end
@@ -300,7 +302,7 @@ object FrmRelProdutos: TFrmRelProdutos
       object ppLabel13: TppLabel
         DesignLayer = ppDesignLayer1
         UserName = 'Label13'
-        Caption = 'Relat'#243'rio de Clientes'
+        Caption = 'Relat'#243'rio de Produtos'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = 'Arial'
@@ -310,7 +312,7 @@ object FrmRelProdutos: TFrmRelProdutos
         mmHeight = 4763
         mmLeft = 1852
         mmTop = 7408
-        mmWidth = 38629
+        mmWidth = 40217
         BandType = 0
         LayerName = Foreground
       end
@@ -370,7 +372,7 @@ object FrmRelProdutos: TFrmRelProdutos
         DesignLayer = ppDesignLayer1
         UserName = 'Label2'
         AutoSize = False
-        Caption = 'Raz'#227'o Social'
+        Caption = 'Descri'#231#227'o'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Name = 'Arial'
@@ -381,24 +383,6 @@ object FrmRelProdutos: TFrmRelProdutos
         mmLeft = 20630
         mmTop = 16669
         mmWidth = 40746
-        BandType = 0
-        LayerName = Foreground
-      end
-      object ppLabel3: TppLabel
-        DesignLayer = ppDesignLayer1
-        UserName = 'Label3'
-        AutoSize = False
-        Caption = 'CNPJ / CPF'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = [fsBold]
-        Transparent = True
-        mmHeight = 4763
-        mmLeft = 98945
-        mmTop = 16667
-        mmWidth = 23813
         BandType = 0
         LayerName = Foreground
       end
@@ -441,29 +425,10 @@ object FrmRelProdutos: TFrmRelProdutos
         BandType = 4
         LayerName = Foreground
       end
-      object ppDBText2: TppDBText
-        DesignLayer = ppDesignLayer1
-        UserName = 'DBText2'
-        DataField = 'RAZAO'
-        DataPipeline = ppDBPipeline1
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Name = 'Arial'
-        Font.Size = 10
-        Font.Style = []
-        Transparent = True
-        DataPipelineName = 'ppDBPipeline1'
-        mmHeight = 4763
-        mmLeft = 20630
-        mmTop = 2910
-        mmWidth = 77523
-        BandType = 4
-        LayerName = Foreground
-      end
       object ppDBText3: TppDBText
         DesignLayer = ppDesignLayer1
         UserName = 'DBText3'
-        DataField = 'INSCRICAO'
+        DataField = 'DESCRICAO'
         DataPipeline = ppDBPipeline1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -473,9 +438,9 @@ object FrmRelProdutos: TFrmRelProdutos
         Transparent = True
         DataPipelineName = 'ppDBPipeline1'
         mmHeight = 4763
-        mmLeft = 98945
+        mmLeft = 20570
         mmTop = 2910
-        mmWidth = 45798
+        mmWidth = 118269
         BandType = 4
         LayerName = Foreground
       end

@@ -6,18 +6,18 @@ uses
   IniFiles, System.SysUtils, System.Classes, Data.FMTBcd, Data.DB, Data.SqlExpr,
   Windows, Messages, Variants, Graphics,
   Controls, Forms, Dialogs, StdCtrls, Buttons, Data.DBXMSSQL, Datasnap.DBClient,
-  SimpleDS;
+  SimpleDS, Data.Win.ADODB;
 
 type
   TDmPrincipal = class(TDataModule)
-    SQLConn: TSQLConnection;
-    SQLDsConsulta: TSQLDataSet;
-    SQLDsAux: TSQLDataSet;
+    ADOConn: TADOConnection;
+    QryConsulta: TADOQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
   public
-    { Public declarations }
+    pConfiguracao: Boolean;
+    property Configuracao: Boolean read pConfiguracao write pConfiguracao;
   end;
 
 type
@@ -63,11 +63,11 @@ var
   Config: TIniFile;
 begin
   Arquivo := ExtractFilePath(Application.ExeName) + 'base.ini';
-
+  pConfiguracao     := False;
   if not FileExists(Arquivo) then
   begin
-    ShowMessage('Não existe arquivo INI com as informações.');
-    Abort;
+    ShowMessage('Não existe arquivo "BASE.INI" com as informações.');
+    exit;
   end;
 
   config := TIniFile.Create(Arquivo);
@@ -82,22 +82,21 @@ begin
   end;
 
   try
-    SQLConn.ConnectionName := 'MSSQLConnection';
-    SQLConn.DriverName     := 'MSSQL';
-    SQLConn.LoginPrompt    := False;
-    try
-      SQLConn.Connected := False;
-      SQLConn.Params.Values['Server']     := Server;
-      SQLConn.Params.Values['DataBase']   := Path;
-      SQLConn.Params.Values['User_Name']  := User;
-      SQLConn.Params.Values['Password']   := Password;
-      SQLConn.Connected := True;
-    except
-      ShowMessage('Erro ao conectar com o banco de dados.');
-    end;
-  except
-    raise;
-  end;
+    ADOConn.Connected := False;
+
+    ADOConn.ConnectionString := 'Provider=SQLNCLI11.0;'+
+                                'Persist Security Info=True;'+
+                                'User ID='+User+';'+
+                                'Password='+Password+';'+
+                                'Initial Catalog='+Path+';'+
+                                'Data Source='+Server+';'+
+                                'Auto Translate=True;'+
+                                'Packet Size=4096;';
+   ADOConn.Connected := True;
+   pConfiguracao     := True;
+   except on E: Exception do
+     ShowMessage('Erro ao conectar com o banco de dados.'+#13+E.Message);
+   end;
 end;
 
 end.

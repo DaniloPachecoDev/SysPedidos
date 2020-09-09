@@ -108,9 +108,9 @@ function TPedidoCrud.Insere: Boolean;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'INSERT INTO PEDIDO     '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'INSERT INTO PEDIDO     '+
                                  '      (REFERENCIA,     '+
                                  '       NUM_Pedido,     '+
                                  '       Data_Emissao,   '+
@@ -125,14 +125,14 @@ begin
                                  '       :pTIP_OPERACAO, '+
                                  '       :pTOT_Pedido)   ';
 
-    SQLDsConsulta.Params.ParamByName('pREFERENCIA').AsInteger    := StrToInt(Self.FReferencia);
-    SQLDsConsulta.Params.ParamByName('pNUM_Pedido').AsInteger    := StrToInt(Self.FNum_Pedido);
-    SQLDsConsulta.Params.ParamByName('pData_Emissao').AsDateTime := Self.FData_Emissao;
-    SQLDsConsulta.Params.ParamByName('pCOD_Cliente').AsInteger   := Self.FCod_Cliente;
-    SQLDsConsulta.Params.ParamByName('pTIP_OPERACAO').AsString   := IntToStr(Self.FTip_Operacao);
-    SQLDsConsulta.Params.ParamByName('pTOT_Pedido').AsFloat      := Self.FTot_Pedido;
+    QryConsulta.Parameters.ParamByName('pREFERENCIA').Value   := StrToInt(Self.FReferencia);
+    QryConsulta.Parameters.ParamByName('pNUM_Pedido').Value   := StrToInt(Self.FNum_Pedido);
+    QryConsulta.Parameters.ParamByName('pData_Emissao').Value := Self.FData_Emissao;
+    QryConsulta.Parameters.ParamByName('pCOD_Cliente').Value  := Self.FCod_Cliente;
+    QryConsulta.Parameters.ParamByName('pTIP_OPERACAO').Value := IntToStr(Self.FTip_Operacao);
+    QryConsulta.Parameters.ParamByName('pTOT_Pedido').Value   := Self.FTot_Pedido;
     try
-      SQLDsConsulta.ExecSQL;
+      QryConsulta.ExecSQL;
       Result := True;
     except
       Result := False;
@@ -144,9 +144,9 @@ function TPedidoCrud.Altera: Boolean;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'UPDATE PEDIDO                      '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'UPDATE PEDIDO                      '+
                                  'SET REFERENCIA = :pREFERENCIA,     '+
                                  '    NUM_Pedido = :pNUM_Pedido,     '+
                                  '    Data_Emissao = :pData_Emissao, '+
@@ -155,15 +155,15 @@ begin
                                  '    TOT_Pedido = :pTOT_Pedido      '+
                                  'WHERE CODIGO = :pCODIGO            ';
 
-    SQLDsConsulta.Params.ParamByName('pREFERENCIA').AsInteger    := StrToInt(Self.FReferencia);
-    SQLDsConsulta.Params.ParamByName('pNUM_Pedido').AsInteger    := StrToInt(Self.FNum_Pedido);
-    SQLDsConsulta.Params.ParamByName('pData_Emissao').AsDateTime := Self.FData_Emissao;
-    SQLDsConsulta.Params.ParamByName('pCOD_Cliente').AsInteger   := Self.FCod_Cliente;
-    SQLDsConsulta.Params.ParamByName('pTIP_OPERACAO').AsString   := IntToStr(Self.FTip_Operacao);
-    SQLDsConsulta.Params.ParamByName('pTOT_Pedido').AsFloat      := Self.FTot_Pedido;
-    SQLDsConsulta.Params.ParamByName('pCodigo').AsInteger        := Self.FCodigo;
+    QryConsulta.Parameters.ParamByName('pREFERENCIA').Value   := StrToInt(Self.FReferencia);
+    QryConsulta.Parameters.ParamByName('pNUM_Pedido').Value   := StrToInt(Self.FNum_Pedido);
+    QryConsulta.Parameters.ParamByName('pData_Emissao').Value := Self.FData_Emissao;
+    QryConsulta.Parameters.ParamByName('pCOD_Cliente').Value  := Self.FCod_Cliente;
+    QryConsulta.Parameters.ParamByName('pTIP_OPERACAO').Value := IntToStr(Self.FTip_Operacao);
+    QryConsulta.Parameters.ParamByName('pTOT_Pedido').Value   := Self.FTot_Pedido;
+    QryConsulta.Parameters.ParamByName('pCodigo').Value       := Self.FCodigo;
     try
-      SQLDsConsulta.ExecSQL;
+      QryConsulta.ExecSQL;
       Result := True;
     except
       Result := False;
@@ -175,13 +175,13 @@ function TPedidoCrud.Exclui: Boolean;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'DELETE FROM PEDIDO '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'DELETE FROM PEDIDO '+
                                  'WHERE CODIGO = :pCodigo ';
-    SQLDsConsulta.Params.ParamByName('pCodigo').AsInteger := Self.Codigo;
+    QryConsulta.Parameters.ParamByName('pCodigo').Value:= Self.Codigo;
     try
-      SQLDsConsulta.ExecSQL;
+      QryConsulta.ExecSQL;
       Result := True;
     except
       Result := False;
@@ -193,9 +193,9 @@ function TPedidoCrud.Pesquisa(pNum: String): TPedidoCrud;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'SELECT CODIGO,       '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'SELECT CODIGO,       '+
                                  '       REFERENCIA,   '+
                                  '       NUM_Pedido,   '+
                                  '       Data_Emissao, '+
@@ -204,12 +204,12 @@ begin
                                  '       TOT_Pedido,   '+
                                  'FROM PEDIDO          '+
                                  'WHERE NUM_PEDIDO LIKE '+QuotedStr('%'+pNum);
-    SQLDsConsulta.Open;
-    if SQLDsConsulta.IsEmpty then
+    QryConsulta.Open;
+    if QryConsulta.IsEmpty then
       Self.Num_Pedido := ''
     else
       begin
-        Self.Num_Pedido  := SQLDsConsulta.FieldByName('NUM_Pedido').AsString;
+        Self.Num_Pedido  := QryConsulta.FieldByName('NUM_Pedido').AsString;
       end;
   end;
 end;
@@ -231,9 +231,9 @@ function TPagamentoPedidoCrud.Insere: Boolean;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'INSERT INTO PARPED       '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'INSERT INTO PARPED       '+
                                  '      (COD_PEDIDO,       '+
                                  '       FORMA_PAG,        '+
                                  '       DAT_VENCIMENTO,   '+
@@ -244,12 +244,12 @@ begin
                                  '       :pDAT_VENCIMENTO, '+
                                  '       :pVAL_PARCELA)    ';
 
-    SQLDsConsulta.Params.ParamByName('pCOD_PEDIDO').AsInteger      := Self.FCod_Pedido;
-    SQLDsConsulta.Params.ParamByName('pFORMA_PAG').AsInteger       := Self.FForma_Pag;
-    SQLDsConsulta.Params.ParamByName('pDAT_VENCIMENTO').AsDateTime := Self.FDat_Vencimento;
-    SQLDsConsulta.Params.ParamByName('pVAL_PARCELA').AsFloat       := Self.FVal_Parcela;
+    QryConsulta.Parameters.ParamByName('pCOD_PEDIDO').Value     := Self.FCod_Pedido;
+    QryConsulta.Parameters.ParamByName('pFORMA_PAG').Value      := Self.FForma_Pag;
+    QryConsulta.Parameters.ParamByName('pDAT_VENCIMENTO').Value := Self.FDat_Vencimento;
+    QryConsulta.Parameters.ParamByName('pVAL_PARCELA').Value    := Self.FVal_Parcela;
     try
-      SQLDsConsulta.ExecSQL;
+      QryConsulta.ExecSQL;
       Result := True;
     except
       Result := False;
@@ -261,20 +261,20 @@ function TPagamentoPedidoCrud.Altera: Boolean;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'UPDATE PARPED                         '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'UPDATE PARPED                         '+
                                  'SET FORMA_PAG = :pFORMA_PAG,          '+
                                  '    DAT_VENCIMENTO = :pDAT_VENCIMENTO,'+
                                  '    VAL_PARCELA = :pVAL_PARCELA       '+
                                  'WHERE COD_PEDIDO = :pCOD_PEDIDO       ';
 
-    SQLDsConsulta.Params.ParamByName('pFORMA_PAG').AsInteger       := Self.FForma_Pag;
-    SQLDsConsulta.Params.ParamByName('pDAT_VENCIMENTO').AsDateTime := Self.FDat_Vencimento;
-    SQLDsConsulta.Params.ParamByName('pVAL_PARCELA').AsFloat       := Self.FVal_Parcela;
-    SQLDsConsulta.Params.ParamByName('pCOD_PEDIDO').AsInteger      := Self.FCod_Pedido;
+    QryConsulta.Parameters.ParamByName('pFORMA_PAG').Value      := Self.FForma_Pag;
+    QryConsulta.Parameters.ParamByName('pDAT_VENCIMENTO').Value := Self.FDat_Vencimento;
+    QryConsulta.Parameters.ParamByName('pVAL_PARCELA').Value    := Self.FVal_Parcela;
+    QryConsulta.Parameters.ParamByName('pCOD_PEDIDO').Value     := Self.FCod_Pedido;
     try
-      SQLDsConsulta.ExecSQL;
+      QryConsulta.ExecSQL;
       Result := True;
     except
       Result := False;
@@ -308,9 +308,9 @@ begin
     pClientDataSet.First;
     while not pClientDataSet.Eof do
     begin
-      SQLDsConsulta.Close;
-      SQLDsConsulta.CommandText := '';
-      SQLDsConsulta.CommandText := 'INSERT INTO ITEMPED  '+
+      QryConsulta.Close;
+      QryConsulta.SQL.Text := '';
+      QryConsulta.SQL.Text := 'INSERT INTO ITEMPED  '+
                                    '      (COD_PEDIDO,   '+
                                    '       COD_PRODUTO,  '+
                                    '       QTD,          '+
@@ -322,13 +322,13 @@ begin
                                    '       :pQTD,        '+
                                    '       :pVR_UNIT,    '+
                                    '       :pTOT_ITEM)   ';
-      SQLDsConsulta.Params.ParamByName('pCOD_PEDIDO').AsInteger  := pClientDataSet.FieldByName('Cod_Pedido').AsInteger;
-      SQLDsConsulta.Params.ParamByName('pCOD_PRODUTO').AsInteger := pClientDataSet.FieldByName('COD_PRODUTO').AsInteger;
-      SQLDsConsulta.Params.ParamByName('pQTD').AsInteger         := pClientDataSet.FieldByName('QUANTIDADE').AsInteger;
-      SQLDsConsulta.Params.ParamByName('pVR_UNIT').AsFloat       := pClientDataSet.FieldByName('VALOR_UNITARIO').AsFloat;
-      SQLDsConsulta.Params.ParamByName('pTOT_ITEM').AsFloat      := pClientDataSet.FieldByName('VALOR_TOTAL').AsFloat;
+      QryConsulta.Parameters.ParamByName('pCOD_PEDIDO').Value  := pClientDataSet.FieldByName('Cod_Pedido').AsInteger;
+      QryConsulta.Parameters.ParamByName('pCOD_PRODUTO').Value := pClientDataSet.FieldByName('COD_PRODUTO').AsInteger;
+      QryConsulta.Parameters.ParamByName('pQTD').Value         := pClientDataSet.FieldByName('QUANTIDADE').AsInteger;
+      QryConsulta.Parameters.ParamByName('pVR_UNIT').Value     := pClientDataSet.FieldByName('VALOR_UNITARIO').Value;
+      QryConsulta.Parameters.ParamByName('pTOT_ITEM').Value    := pClientDataSet.FieldByName('VALOR_TOTAL').Value;
       try
-        SQLDsConsulta.ExecSQL;
+        QryConsulta.ExecSQL;
         Result := True;
       except
         Result := False;
@@ -339,6 +339,8 @@ begin
 end;
 
 function TItemPedidoCrud.Altera(pClientDataSet: TClientDataSet): Boolean;
+var
+  pCodProdutoTemp: integer;
 begin
   with FConexao do
   begin
@@ -346,20 +348,20 @@ begin
     while not pClientDataSet.Eof do
     begin
       // Na EDIÇÃO do pedido o usuario pode incluir um novo ITEM, portanto faço a condição abaixo de pesquisa.
-      SQLDsAux.Close;
-      SQLDsAux.CommandText := '';
-      SQLDsAux.CommandText := 'SELECT COD_PRODUTO FROM ITEMPED  '+
+      QryConsulta.Close;
+      QryConsulta.SQL.Text := '';
+      QryConsulta.SQL.Text := 'SELECT COD_PRODUTO FROM ITEMPED  '+
                               'WHERE COD_PRODUTO = :pCODPRODUTO '+
                               '  AND COD_PEDIDO = :pCODPEDIDO   ';
-      SQLDsAux.Params.ParamByName('pCODPRODUTO').AsInteger  := pClientDataSet.FieldByName('COD_PRODUTO').AsInteger;
-      SQLDsAux.Params.ParamByName('pCODPEDIDO').AsInteger   := pClientDataSet.FieldByName('COD_PEDIDO').AsInteger;
-      SQLDsAux.Open;
-
-      if SQLDsAux.FieldByName('COD_PRODUTO').AsInteger <= 0 then
+      QryConsulta.Parameters.ParamByName('pCODPRODUTO').Value := pClientDataSet.FieldByName('COD_PRODUTO').AsInteger;
+      QryConsulta.Parameters.ParamByName('pCODPEDIDO').Value  := pClientDataSet.FieldByName('COD_PEDIDO').AsInteger;
+      QryConsulta.Open;
+      pCodProdutoTemp := QryConsulta.FieldByName('COD_PRODUTO').AsInteger;
+      if pCodProdutoTemp <= 0 then
       begin
-        SQLDsConsulta.Close;
-        SQLDsConsulta.CommandText := '';
-        SQLDsConsulta.CommandText := 'INSERT INTO ITEMPED  '+
+        QryConsulta.Close;
+        QryConsulta.SQL.Text := '';
+        QryConsulta.SQL.Text := 'INSERT INTO ITEMPED  '+
                                      '      (COD_PEDIDO,   '+
                                      '       COD_PRODUTO,  '+
                                      '       QTD,          '+
@@ -371,31 +373,31 @@ begin
                                      '       :pQTD,        '+
                                      '       :pVR_UNIT,    '+
                                      '       :pTOT_ITEM)   ';
-        SQLDsConsulta.Params.ParamByName('pCOD_PEDIDO').AsInteger  := pClientDataSet.FieldByName('Cod_Pedido').AsInteger;
-        SQLDsConsulta.Params.ParamByName('pCOD_PRODUTO').AsInteger := pClientDataSet.FieldByName('COD_PRODUTO').AsInteger;
-        SQLDsConsulta.Params.ParamByName('pQTD').AsInteger         := pClientDataSet.FieldByName('QUANTIDADE').AsInteger;
-        SQLDsConsulta.Params.ParamByName('pVR_UNIT').AsFloat       := pClientDataSet.FieldByName('VALOR_UNITARIO').AsFloat;
-        SQLDsConsulta.Params.ParamByName('pTOT_ITEM').AsFloat      := pClientDataSet.FieldByName('VALOR_TOTAL').AsFloat;
+        QryConsulta.Parameters.ParamByName('pCOD_PEDIDO').Value  := pClientDataSet.FieldByName('Cod_Pedido').AsInteger;
+        QryConsulta.Parameters.ParamByName('pCOD_PRODUTO').Value := pClientDataSet.FieldByName('COD_PRODUTO').AsInteger;
+        QryConsulta.Parameters.ParamByName('pQTD').Value         := pClientDataSet.FieldByName('QUANTIDADE').AsInteger;
+        QryConsulta.Parameters.ParamByName('pVR_UNIT').Value     := pClientDataSet.FieldByName('VALOR_UNITARIO').Value;
+        QryConsulta.Parameters.ParamByName('pTOT_ITEM').Value    := pClientDataSet.FieldByName('VALOR_TOTAL').Value;
       end
       else
       begin
-        SQLDsConsulta.Close;
-        SQLDsConsulta.CommandText := '';
-        SQLDsConsulta.CommandText := 'UPDATE ITEMPED                   '+
+        QryConsulta.Close;
+        QryConsulta.SQL.Text := '';
+        QryConsulta.SQL.Text := 'UPDATE ITEMPED                   '+
                                      'SET COD_PRODUTO = :pCOD_PRODUTO, '+
                                      '    QTD = :pQTD,                 '+
                                      '    VR_UNIT = :pVR_UNIT,         '+
                                      '    TOT_ITEM = :pTOT_ITEM        '+
                                      'WHERE COD_PEDIDO = :pCOD_PEDIDO  ';
-        SQLDsConsulta.Params.ParamByName('pCOD_PRODUTO').AsInteger := pClientDataSet.FieldByName('COD_PRODUTO').AsInteger;
-        SQLDsConsulta.Params.ParamByName('pQTD').AsInteger         := pClientDataSet.FieldByName('QUANTIDADE').AsInteger;
-        SQLDsConsulta.Params.ParamByName('pVR_UNIT').AsFloat       := pClientDataSet.FieldByName('VALOR_UNITARIO').AsFloat;
-        SQLDsConsulta.Params.ParamByName('pTOT_ITEM').AsFloat      := pClientDataSet.FieldByName('VALOR_TOTAL').AsFloat;
-        SQLDsConsulta.Params.ParamByName('pCOD_PEDIDO').AsInteger  := pClientDataSet.FieldByName('Cod_Pedido').AsInteger;
+        QryConsulta.Parameters.ParamByName('pCOD_PRODUTO').Value := pClientDataSet.FieldByName('COD_PRODUTO').AsInteger;
+        QryConsulta.Parameters.ParamByName('pQTD').Value         := pClientDataSet.FieldByName('QUANTIDADE').AsInteger;
+        QryConsulta.Parameters.ParamByName('pVR_UNIT').Value     := pClientDataSet.FieldByName('VALOR_UNITARIO').Value;
+        QryConsulta.Parameters.ParamByName('pTOT_ITEM').Value    := pClientDataSet.FieldByName('VALOR_TOTAL').Value;
+        QryConsulta.Parameters.ParamByName('pCOD_PEDIDO').Value  := pClientDataSet.FieldByName('Cod_Pedido').AsInteger;
       end;
 
       try
-        SQLDsConsulta.ExecSQL;
+        QryConsulta.ExecSQL;
         Result := True;
       except
         Result := False;

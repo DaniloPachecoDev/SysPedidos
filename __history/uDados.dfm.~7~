@@ -8,12 +8,34 @@ object DmPrincipal: TDmPrincipal
     DriverName = 'MSSQL'
     LoginPrompt = False
     Params.Strings = (
+      'DriverUnit=Data.DBXMSSQL'
+      
+        'DriverPackageLoader=TDBXDynalinkDriverLoader,DBXCommonDriver240.' +
+        'bpl'
+      
+        'DriverAssemblyLoader=Borland.Data.TDBXDynalinkDriverLoader,Borla' +
+        'nd.Data.DbxCommonDriver,Version=24.0.0.0,Culture=neutral,PublicK' +
+        'eyToken=91d62ebb5b0d1b1b'
+      
+        'MetaDataPackageLoader=TDBXMsSqlMetaDataCommandFactory,DbxMSSQLDr' +
+        'iver240.bpl'
+      
+        'MetaDataAssemblyLoader=Borland.Data.TDBXMsSqlMetaDataCommandFact' +
+        'ory,Borland.Data.DbxMSSQLDriver,Version=24.0.0.0,Culture=neutral' +
+        ',PublicKeyToken=91d62ebb5b0d1b1b'
+      'GetDriverFunc=getSQLDriverMSSQL'
+      'LibraryName=dbxmss.dll'
+      'VendorLib=sqlncli10.dll'
+      'VendorLibWin64=sqlncli10.dll'
+      'HostName=ServerName'
+      'MaxBlobSize=-1'
+      'OSAuthentication=False'
+      'PrepareSQL=True'
       'SchemaOverride=sa.dbo'
       'DriverName=MSSQL'
-      'HostName=FTS-DEV-FIS-NTB\LOCAL'
-      'DataBase=Base'
-      'User_Name=sa'
-      'Password=dan021130'
+      'DataBase='
+      'User_Name='
+      'Password='
       'BlobSize=-1'
       'ErrorResourceFile='
       'LocaleCode=0000'
@@ -22,7 +44,6 @@ object DmPrincipal: TDmPrincipal
       'Prepare SQL=False'
       'ConnectTimeout=60'
       'Mars_Connection=False')
-    Connected = True
     Left = 112
     Top = 56
   end
@@ -44,29 +65,10 @@ object DmPrincipal: TDmPrincipal
     Left = 216
     Top = 144
   end
-  object sdsQuery: TSimpleDataSet
-    Aggregates = <>
-    Connection.ConnectionName = 'MSSQLConnection'
-    Connection.DriverName = 'MSSQL'
-    Connection.Params.Strings = (
-      'SchemaOverride=sa.dbo'
-      'DriverName=MSSQL'
-      'HostName=ServerName'
-      'DataBase=Database Name'
-      'User_Name=user'
-      'Password=password'
-      'BlobSize=-1'
-      'ErrorResourceFile='
-      'LocaleCode=0000'
-      'IsolationLevel=ReadCommitted'
-      'OS Authentication=False'
-      'Prepare SQL=False'
-      'ConnectTimeout=60'
-      'Mars_Connection=False')
-    DataSet.MaxBlobSize = -1
-    DataSet.Params = <>
-    Params = <>
-    Left = 288
-    Top = 48
+  object ADOConn: TADOConnection
+    LoginPrompt = False
+    Provider = 'SQLNCLI10.1'
+    Left = 368
+    Top = 64
   end
 end

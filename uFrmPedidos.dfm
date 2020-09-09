@@ -2,18 +2,19 @@
   BorderIcons = [biSystemMenu]
   Caption = 'Pedidos'
   ClientHeight = 511
-  ClientWidth = 679
+  ClientWidth = 705
   FormStyle = fsMDIChild
   Position = poOwnerFormCenter
   Visible = True
-  ExplicitWidth = 695
+  ExplicitTop = -8
+  ExplicitWidth = 721
   ExplicitHeight = 550
   PixelsPerInch = 96
   TextHeight = 13
   inherited PanelBotoes: TPanel
-    Left = 543
+    Left = 569
     Height = 511
-    ExplicitLeft = 543
+    ExplicitLeft = 544
     ExplicitHeight = 511
     inherited BtnSair: TBitBtn
       Top = 213
@@ -21,16 +22,17 @@
     end
   end
   inherited PanelPrincipal: TPanel
-    Width = 543
+    Width = 569
     Height = 511
-    ExplicitWidth = 543
+    ExplicitWidth = 577
     ExplicitHeight = 511
     inherited PageControl1: TPageControl
-      Width = 541
+      Width = 569
       Height = 497
+      ActivePage = TabSheet1
       TabHeight = 1
       TabWidth = 1
-      ExplicitWidth = 541
+      ExplicitWidth = 569
       ExplicitHeight = 497
       inherited TabSheet1: TTabSheet
         Caption = ''
@@ -39,14 +41,14 @@
         ExplicitWidth = 533
         ExplicitHeight = 486
         inherited DBGridDados: TDBGrid
-          Width = 527
+          Width = 555
           Height = 422
           Align = alTop
           Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           ReadOnly = True
         end
         inherited PnlCabecalho: TPanel
-          Width = 533
+          Width = 561
           ExplicitWidth = 533
           inherited lblPesquisa: TLabel
             Width = 134
@@ -54,7 +56,7 @@
             ExplicitWidth = 134
           end
           inherited EditPesqNome: TEdit
-            Width = 531
+            Width = 559
             OnChange = EditPesqNomeChange
             ExplicitWidth = 531
           end
@@ -64,7 +66,7 @@
         Caption = ''
         ExplicitLeft = 4
         ExplicitTop = 7
-        ExplicitWidth = 533
+        ExplicitWidth = 537
         ExplicitHeight = 486
         inherited BtnConfirma: TBitBtn
           Left = 438
@@ -76,7 +78,7 @@
         object GroupBox1: TGroupBox
           Left = 5
           Top = 1
-          Width = 525
+          Width = 544
           Height = 442
           Caption = 'Pedido '
           TabOrder = 0
@@ -412,7 +414,7 @@
           end
           object GrpPagamento: TGroupBox
             Left = 3
-            Top = 350
+            Top = 351
             Width = 519
             Height = 87
             Caption = 'Forma de pagamento '
@@ -538,21 +540,21 @@
   end
   inherited dsPadrao: TDataSource
     DataSet = cdsPedido
-    Left = 728
-    Top = 384
+    Left = 576
+    Top = 400
   end
   object dsClientes: TDataSource
     DataSet = cdsClientes
-    Left = 694
-    Top = 464
+    Left = 254
+    Top = 440
   end
   object cdsClientes: TClientDataSet
     Aggregates = <>
     CommandText = 'SELECT CODIGO, RAZAO FROM CLIENTES'
     Params = <>
     ProviderName = 'dspServer'
-    Left = 694
-    Top = 440
+    Left = 254
+    Top = 408
     object cdsClientesCODIGO: TIntegerField
       FieldName = 'CODIGO'
     end
@@ -562,16 +564,16 @@
   end
   object dsProduto: TDataSource
     DataSet = cdsProduto
-    Left = 774
-    Top = 464
+    Left = 318
+    Top = 440
   end
   object cdsProduto: TClientDataSet
     Aggregates = <>
     CommandText = 'SELECT CODIGO, DESCRICAO FROM PRODUTOS'
     Params = <>
     ProviderName = 'dspServer'
-    Left = 774
-    Top = 440
+    Left = 326
+    Top = 408
     object cdsProdutoCODIGO: TIntegerField
       FieldName = 'CODIGO'
     end
@@ -580,14 +582,15 @@
     end
   end
   object dspServer: TDataSetProvider
-    DataSet = DmPrincipal.SQLDsConsulta
+    DataSet = DmPrincipal.QryConsulta
     Options = [poAllowMultiRecordUpdates, poAllowCommandText, poUseQuoteChar]
-    Left = 728
-    Top = 320
+    Left = 568
+    Top = 456
   end
   object cdsTempItens: TClientDataSet
     Aggregates = <>
     Params = <>
+    ProviderName = 'dspPedidos'
     Left = 104
     Top = 408
     object cdsTempItensCOD_PEDIDO: TIntegerField
@@ -627,7 +630,6 @@
     Top = 432
   end
   object cdsPedido: TClientDataSet
-    Active = True
     Aggregates = <>
     CommandText = 
       'SELECT CODIGO, REFERENCIA, NUM_Pedido, Data_Emissao, COD_Cliente' +
@@ -647,16 +649,15 @@
       FieldName = 'NUM_Pedido'
       Required = True
     end
-    object cdsPedidoData_Emissao: TSQLTimeStampField
-      DisplayLabel = 'Data de Emiss'#227'o'
-      DisplayWidth = 19
-      FieldName = 'Data_Emissao'
-    end
     object cdsPedidoCOD_Cliente: TIntegerField
       DisplayLabel = 'Cod. Cliente'
       DisplayWidth = 9
       FieldName = 'COD_Cliente'
       Required = True
+    end
+    object cdsPedidoData_Emissao: TDateTimeField
+      DisplayLabel = 'Data de Emiss'#227'o'
+      FieldName = 'Data_Emissao'
     end
     object cdsPedidoTIP_OPERACAO: TStringField
       DisplayLabel = 'Tip. Opera'#231#227'o'
@@ -665,13 +666,12 @@
       OnGetText = cdsPedidoTIP_OPERACAOGetText
       Size = 8
     end
-    object cdsPedidoTOT_Pedido: TFMTBCDField
+    object cdsPedidoTOT_Pedido: TBCDField
       DisplayLabel = 'Valor Total'
-      DisplayWidth = 10
+      DisplayWidth = 15
       FieldName = 'TOT_Pedido'
       EditFormat = '#,##0.00'
       currency = True
-      Precision = 15
       Size = 2
     end
     object cdsPedidoCODIGO: TIntegerField
@@ -682,7 +682,7 @@
     end
   end
   object dspPedidos: TDataSetProvider
-    DataSet = DmPrincipal.SQLDsConsulta
+    DataSet = DmPrincipal.QryConsulta
     Options = [poFetchBlobsOnDemand, poFetchDetailsOnDemand, poAllowMultiRecordUpdates, poAutoRefresh, poAllowCommandText, poUseQuoteChar]
     Left = 24
     Top = 432
@@ -696,15 +696,15 @@
     Aggregates = <>
     Params = <>
     ProviderName = 'dspServer'
-    Left = 694
-    Top = 264
+    Left = 574
+    Top = 280
   end
   object cdsAuxItem: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspServer'
-    Left = 758
-    Top = 264
+    Left = 574
+    Top = 336
   end
   object dsParPed: TDataSource
     DataSet = cdsParcelamento
@@ -717,7 +717,7 @@
       'SELECT COD_PEDIDO, FORMA_PAG, DAT_VENCIMENTO, VAL_PARCELA FROM P' +
       'ARPED'
     Params = <>
-    ProviderName = 'dspServer'
+    ProviderName = 'dspPedidos'
     Left = 176
     Top = 408
     object cdsParcelamentoCOD_PEDIDO: TIntegerField
@@ -727,12 +727,13 @@
     object cdsParcelamentoFORMA_PAG: TIntegerField
       FieldName = 'FORMA_PAG'
     end
-    object cdsParcelamentoDAT_VENCIMENTO: TSQLTimeStampField
+    object cdsParcelamentoDAT_VENCIMENTO: TDateTimeField
       FieldName = 'DAT_VENCIMENTO'
     end
-    object cdsParcelamentoVAL_PARCELA: TFMTBCDField
+    object cdsParcelamentoVAL_PARCELA: TBCDField
+      DisplayWidth = 15
       FieldName = 'VAL_PARCELA'
-      Precision = 15
+      EditFormat = '#,##0.00'
       Size = 2
     end
   end

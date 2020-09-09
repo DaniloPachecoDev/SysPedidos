@@ -2,8 +2,8 @@ program SisPedidos;
 
 uses
   Vcl.Forms,
-  uFrmPrincipal in 'uFrmPrincipal.pas' {FrmPrincipal},
   uDados in 'uDados.pas' {DmPrincipal: TDataModule},
+  uFrmPrincipal in 'uFrmPrincipal.pas' {FrmPrincipal},
   Vcl.Themes,
   Vcl.Styles,
   uCrudCliente in 'uCrudCliente.pas',
@@ -25,6 +25,8 @@ begin
   Application.Title := 'Sistema de Pedidos';
   TStyleManager.TrySetStyle('Amethyst Kamri');
   Application.CreateForm(TDmPrincipal, DmPrincipal);
-  Application.CreateForm(TFrmPrincipal, FrmPrincipal);
+  if DmPrincipal.Configuracao then
+    Application.CreateForm(TFrmPrincipal, FrmPrincipal);
+
   Application.Run;
 end.

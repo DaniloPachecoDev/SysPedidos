@@ -21,6 +21,7 @@ inherited FrmCadProdutos: TFrmCadProdutos
       ExplicitHeight = 337
       inherited TabSheet1: TTabSheet
         Caption = ''
+        ExplicitLeft = 4
         ExplicitTop = 7
         ExplicitWidth = 446
         ExplicitHeight = 326
@@ -47,6 +48,7 @@ inherited FrmCadProdutos: TFrmCadProdutos
       end
       inherited TabSheet2: TTabSheet
         Caption = ''
+        ExplicitLeft = 4
         ExplicitTop = 7
         ExplicitWidth = 446
         ExplicitHeight = 326
@@ -103,8 +105,8 @@ inherited FrmCadProdutos: TFrmCadProdutos
     CommandText = 'SELECT CODIGO, DESCRICAO FROM PRODUTOS'
     Params = <>
     ProviderName = 'DataSetProvider'
-    Left = 348
-    Top = 184
+    Left = 284
+    Top = 160
     object cdsPesqCodigo: TIntegerField
       FieldName = 'Codigo'
     end
@@ -113,10 +115,10 @@ inherited FrmCadProdutos: TFrmCadProdutos
     end
   end
   object DataSetProvider: TDataSetProvider
-    DataSet = DmPrincipal.SQLDsConsulta
+    DataSet = DmPrincipal.QryConsulta
     Options = [poAllowMultiRecordUpdates, poAutoRefresh, poAllowCommandText, poUseQuoteChar]
-    Left = 348
-    Top = 240
+    Left = 276
+    Top = 216
   end
   object cdsAux: TClientDataSet
     Aggregates = <>
@@ -130,7 +132,7 @@ inherited FrmCadProdutos: TFrmCadProdutos
     Aggregates = <>
     Params = <>
     ProviderName = 'DataSetProvider'
-    Left = 125
-    Top = 165
+    Left = 221
+    Top = 157
   end
 end

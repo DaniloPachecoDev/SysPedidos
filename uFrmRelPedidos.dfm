@@ -12,9 +12,11 @@ object FrmRelPedidos: TFrmRelPedidos
   Font.Name = 'Tahoma'
   Font.Style = []
   FormStyle = fsMDIChild
+  KeyPreview = True
   OldCreateOrder = False
   Visible = True
   OnClose = FormClose
+  OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -159,9 +161,8 @@ object FrmRelPedidos: TFrmRelPedidos
       DisplayLabel = 'Num. Pedido'
       FieldName = 'NUM_Pedido'
     end
-    object cdsPedidosData_Emissao: TSQLTimeStampField
+    object cdsPedidosData_Emissao: TDateTimeField
       DisplayLabel = 'Data de Emiss'#227'o'
-      DisplayWidth = 20
       FieldName = 'Data_Emissao'
     end
     object cdsPedidosCod_Cliente: TIntegerField
@@ -178,11 +179,13 @@ object FrmRelPedidos: TFrmRelPedidos
       DisplayWidth = 10
       FieldName = 'TIP_OPERACAO'
     end
-    object cdsPedidosTOT_Pedido: TFMTBCDField
+    object cdsPedidosTOT_Pedido: TBCDField
       DisplayLabel = 'Valor Total'
-      DisplayWidth = 18
+      DisplayWidth = 15
       FieldName = 'TOT_Pedido'
-      Size = 18
+      EditFormat = '#,##0.00'
+      currency = True
+      Size = 2
     end
   end
   object dsPedidos: TDataSource
@@ -191,7 +194,7 @@ object FrmRelPedidos: TFrmRelPedidos
     Top = 224
   end
   object DataSetProvider1: TDataSetProvider
-    DataSet = DmPrincipal.SQLDsConsulta
+    DataSet = DmPrincipal.QryConsulta
     Options = [poAllowMultiRecordUpdates, poAllowCommandText, poUseQuoteChar]
     Left = 128
     Top = 192
@@ -212,11 +215,8 @@ object FrmRelPedidos: TFrmRelPedidos
     object cdsPedSelecionadoNUM_Pedido: TIntegerField
       FieldName = 'NUM_Pedido'
     end
-    object cdsPedSelecionadoData_Emissao: TSQLTimeStampField
+    object cdsPedSelecionadoData_Emissao: TDateTimeField
       FieldName = 'Data_Emissao'
-    end
-    object cdsPedSelecionadoTOT_Pedido: TFMTBCDField
-      FieldName = 'TOT_Pedido'
     end
     object cdsPedSelecionadoCod_Cliente: TIntegerField
       FieldName = 'Cod_Cliente'
@@ -226,6 +226,11 @@ object FrmRelPedidos: TFrmRelPedidos
     end
     object cdsPedSelecionadoTIP_OPERACAO: TStringField
       FieldName = 'TIP_OPERACAO'
+    end
+    object cdsPedSelecionadoTOT_Pedido: TBCDField
+      DisplayWidth = 15
+      FieldName = 'TOT_Pedido'
+      Size = 2
     end
   end
   object dsPedSel: TDataSource
@@ -1116,20 +1121,18 @@ object FrmRelPedidos: TFrmRelPedidos
       FieldName = 'QTD'
       Required = True
     end
-    object cdsImpItensVR_UNIT: TFMTBCDField
-      FieldName = 'VR_UNIT'
-      currency = True
-      Precision = 18
-      Size = 4
-    end
-    object cdsImpItensTOT_ITEM: TFMTBCDField
-      FieldName = 'TOT_ITEM'
-      currency = True
-      Precision = 18
-      Size = 4
-    end
     object cdsImpItensDESCRICAO: TStringField
       FieldName = 'DESCRICAO'
+    end
+    object cdsImpItensVR_UNIT: TBCDField
+      DisplayWidth = 15
+      FieldName = 'VR_UNIT'
+      Size = 2
+    end
+    object cdsImpItensTOT_ITEM: TBCDField
+      DisplayWidth = 15
+      FieldName = 'TOT_ITEM'
+      Size = 2
     end
   end
 end

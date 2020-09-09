@@ -46,16 +46,16 @@ function TProdutoCrud.Insere: Boolean;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'INSERT INTO PRODUTOS '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'INSERT INTO PRODUTOS '+
                                  ' ( DESCRICAO ) '+
                                  'VALUES '+
                                  ' ( :pDescricao ) ';
 
-    SQLDsConsulta.Params.ParamByName('pDescricao').AsString := Self.Descricao;
+    QryConsulta.Parameters.ParamByName('pDescricao').Value := Self.Descricao;
     try
-      SQLDsConsulta.ExecSQL;
+      QryConsulta.ExecSQL;
       Result := True;
     except
       Result := False;
@@ -66,16 +66,16 @@ function TProdutoCrud.Altera: Boolean;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'UPDATE PRODUTOS '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'UPDATE PRODUTOS '+
                                  ' SET DESCRICAO = :pDescricao '+
                                  'WHERE CODIGO = :pCodigo ';
 
-    SQLDsConsulta.Params.ParamByName('pCodigo').AsString    := Self.Codigo;
-    SQLDsConsulta.Params.ParamByName('pDescricao').AsString := Self.Descricao;
+    QryConsulta.Parameters.ParamByName('pCodigo').Value    := Self.Codigo;
+    QryConsulta.Parameters.ParamByName('pDescricao').Value := Self.Descricao;
     try
-      SQLDsConsulta.ExecSQL;
+      QryConsulta.ExecSQL;
       Result := True;
     except
       Result := False;
@@ -87,13 +87,13 @@ function TProdutoCrud.Exclui: Boolean;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'DELETE FROM PRODUTOS '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'DELETE FROM PRODUTOS '+
                                  'WHERE CODIGO = :pCodigo ';
-    SQLDsConsulta.Params.ParamByName('pCodigo').AsString := Self.Codigo;
+    QryConsulta.Parameters.ParamByName('pCodigo').Value := Self.Codigo;
     try
-      SQLDsConsulta.ExecSQL;
+      QryConsulta.ExecSQL;
       Result := True;
     except
       Result := False;
@@ -105,17 +105,17 @@ function TProdutoCrud.Pesquisa(pDesc: String): TProdutoCrud;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'SELECT CODIGO, DESCRICAO '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'SELECT CODIGO, DESCRICAO '+
                                  'FROM PRODUTOS            '+
                                  'WHERE DESCRICAO LIKE '+QuotedStr('%'+pDesc);
-    SQLDsConsulta.Open;
-    if SQLDsConsulta.IsEmpty then
+    QryConsulta.Open;
+    if QryConsulta.IsEmpty then
       Self.Codigo := ''
     else
       begin
-        Self.Descricao  := SQLDsConsulta.FieldByName('Descricao').AsString;
+        Self.Descricao  := QryConsulta.FieldByName('Descricao').AsString;
       end;
   end;
 end;

@@ -6,14 +6,37 @@ object DmPrincipal: TDmPrincipal
   object SQLConn: TSQLConnection
     ConnectionName = 'MSSQLConnection'
     DriverName = 'MSSQL'
+    KeepConnection = False
     LoginPrompt = False
     Params.Strings = (
+      'DriverUnit=Data.DBXMSSQL'
+      
+        'DriverPackageLoader=TDBXDynalinkDriverLoader,DBXCommonDriver240.' +
+        'bpl'
+      
+        'DriverAssemblyLoader=Borland.Data.TDBXDynalinkDriverLoader,Borla' +
+        'nd.Data.DbxCommonDriver,Version=24.0.0.0,Culture=neutral,PublicK' +
+        'eyToken=91d62ebb5b0d1b1b'
+      
+        'MetaDataPackageLoader=TDBXMsSqlMetaDataCommandFactory,DbxMSSQLDr' +
+        'iver240.bpl'
+      
+        'MetaDataAssemblyLoader=Borland.Data.TDBXMsSqlMetaDataCommandFact' +
+        'ory,Borland.Data.DbxMSSQLDriver,Version=24.0.0.0,Culture=neutral' +
+        ',PublicKeyToken=91d62ebb5b0d1b1b'
+      'GetDriverFunc=getSQLDriverMSSQL'
+      'LibraryName=dbxmss.dll'
+      'VendorLib=sqlncli10.dll'
+      'VendorLibWin64=sqlncli10.dll'
+      'HostName=ServerName'
+      'MaxBlobSize=-1'
+      'OSAuthentication=False'
+      'PrepareSQL=True'
       'SchemaOverride=sa.dbo'
       'DriverName=MSSQL'
-      'HostName=FTS-DEV-FIS-NTB\LOCAL'
-      'DataBase=Base'
-      'User_Name=sa'
-      'Password=dan021130'
+      'DataBase='
+      'User_Name='
+      'Password='
       'BlobSize=-1'
       'ErrorResourceFile='
       'LocaleCode=0000'
@@ -22,7 +45,6 @@ object DmPrincipal: TDmPrincipal
       'Prepare SQL=False'
       'ConnectTimeout=60'
       'Mars_Connection=False')
-    Connected = True
     Left = 112
     Top = 56
   end
@@ -39,7 +61,6 @@ object DmPrincipal: TDmPrincipal
       'SELECT COD_PEDIDO, FORMA_PAG, DAT_VENCIMENTO, VAL_PARCELA FROM P' +
       'ARPED'
     MaxBlobSize = -1
-    ParamCheck = False
     Params = <>
     SQLConnection = SQLConn
     Left = 216

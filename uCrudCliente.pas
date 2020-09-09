@@ -36,18 +36,18 @@ function TClienteCrud.Altera: Boolean;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'UPDATE CLIENTES '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'UPDATE CLIENTES '+
                                  ' SET RAZAO = :pRazao, '+
                                  '     INSCRICAO = :pInscricao '+
                                  'WHERE CODIGO = :pCodigo ';
 
-    SQLDsConsulta.Params.ParamByName('pCodigo').AsString    := Self.Codigo;
-    SQLDsConsulta.Params.ParamByName('pRazao').AsString     := Self.Razao;
-    SQLDsConsulta.Params.ParamByName('pInscricao').AsString := Self.Inscricao;
+    QryConsulta.Parameters.ParamByName('pCodigo').Value    := Self.Codigo;
+    QryConsulta.Parameters.ParamByName('pRazao').Value     := Self.Razao;
+    QryConsulta.Parameters.ParamByName('pInscricao').Value := Self.Inscricao;
     try
-      SQLDsConsulta.ExecSQL;
+      QryConsulta.ExecSQL;
       Result := True;
     except
       Result := False;
@@ -70,13 +70,13 @@ function TClienteCrud.Exclui: Boolean;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'DELETE FROM CLIENTES '+
-                                 'WHERE CODIGO = :pCodigo ';
-    SQLDsConsulta.Params.ParamByName('pCodigo').AsString := Self.Codigo;
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'DELETE FROM CLIENTES '+
+                            'WHERE CODIGO = :pCodigo ';
+    QryConsulta.Parameters.ParamByName('pCodigo').Value := Self.Codigo;
     try
-      SQLDsConsulta.ExecSQL;
+      QryConsulta.ExecSQL;
       Result := True;
     except
       Result := False;
@@ -88,17 +88,17 @@ function TClienteCrud.Insere: Boolean;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'INSERT INTO CLIENTES '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'INSERT INTO CLIENTES '+
                                  ' ( RAZAO, INSCRICAO ) '+
                                  'VALUES '+
                                  ' ( :pRazao, :pInscricao ) ';
 
-    SQLDsConsulta.Params.ParamByName('pRazao').AsString     := Self.Razao;
-    SQLDsConsulta.Params.ParamByName('pInscricao').AsString := Self.Inscricao;
+    QryConsulta.Parameters.ParamByName('pRazao').Value     := Self.Razao;
+    QryConsulta.Parameters.ParamByName('pInscricao').Value := Self.Inscricao;
     try
-      SQLDsConsulta.ExecSQL;
+      QryConsulta.ExecSQL;
       Result := True;
     except
       Result := False;
@@ -110,18 +110,18 @@ function TClienteCrud.Pesquisa(pRazao: String): TClienteCrud;
 begin
   with FConexao do
   begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'SELECT RAZAO, INSCRICAO '+
+    QryConsulta.Close;
+    QryConsulta.SQL.Text := '';
+    QryConsulta.SQL.Text := 'SELECT RAZAO, INSCRICAO '+
                                  'FROM CLIENTES           '+
                                  'WHERE RAZAO LIKE '+QuotedStr('%'+pRazao);
-    SQLDsConsulta.Open;
-    if SQLDsConsulta.IsEmpty then
+    QryConsulta.Open;
+    if QryConsulta.IsEmpty then
       Self.Codigo := ''
     else
       begin
-        Self.Razao     := SQLDsConsulta.FieldByName('RAZAO').AsString;
-        Self.Inscricao := SQLDsConsulta.FieldByName('INSCRICAO').AsString;
+        Self.Razao     := QryConsulta.FieldByName('RAZAO').AsString;
+        Self.Inscricao := QryConsulta.FieldByName('INSCRICAO').AsString;
       end;
   end;
 end;

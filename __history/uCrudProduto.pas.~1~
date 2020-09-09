@@ -30,26 +30,6 @@ implementation
 
 { TProdutoCrud }
 
-function TProdutoCrud.Altera: Boolean;
-begin
-  with FConexao do
-  begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'UPDATE PRODUTOS '+
-                                 ' SET DESCRICAO = :pDescricao '+
-                                 'WHERE CODIGO = :pCodigo ';
-
-    SQLDsConsulta.Params.ParamByName('pCodigo').AsString    := Self.Codigo;
-    SQLDsConsulta.Params.ParamByName('pDescricao').AsString := Self.Descricao;
-    try
-      SQLDsConsulta.ExecSQL;
-      Result := True;
-    except
-      Result := False;
-    end;
-  end;
-end;
 
 constructor TProdutoCrud.Create(pConexao: TDmPrincipal);
 begin
@@ -60,24 +40,6 @@ destructor TProdutoCrud.Destroy;
 begin
   //
   inherited;
-end;
-
-function TProdutoCrud.Exclui: Boolean;
-begin
-  with FConexao do
-  begin
-    SQLDsConsulta.Close;
-    SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'DELETE FROM PRODUTOS '+
-                                 'WHERE CODIGO = :pCodigo ';
-    SQLDsConsulta.Params.ParamByName('pCodigo').AsString := Self.Codigo;
-    try
-      SQLDsConsulta.ExecSQL;
-      Result := True;
-    except
-      Result := False;
-    end;
-  end;
 end;
 
 function TProdutoCrud.Insere: Boolean;
@@ -100,6 +62,44 @@ begin
     end;
   end;
 end;
+function TProdutoCrud.Altera: Boolean;
+begin
+  with FConexao do
+  begin
+    SQLDsConsulta.Close;
+    SQLDsConsulta.CommandText := '';
+    SQLDsConsulta.CommandText := 'UPDATE PRODUTOS '+
+                                 ' SET DESCRICAO = :pDescricao '+
+                                 'WHERE CODIGO = :pCodigo ';
+
+    SQLDsConsulta.Params.ParamByName('pCodigo').AsString    := Self.Codigo;
+    SQLDsConsulta.Params.ParamByName('pDescricao').AsString := Self.Descricao;
+    try
+      SQLDsConsulta.ExecSQL;
+      Result := True;
+    except
+      Result := False;
+    end;
+  end;
+end;
+
+function TProdutoCrud.Exclui: Boolean;
+begin
+  with FConexao do
+  begin
+    SQLDsConsulta.Close;
+    SQLDsConsulta.CommandText := '';
+    SQLDsConsulta.CommandText := 'DELETE FROM PRODUTOS '+
+                                 'WHERE CODIGO = :pCodigo ';
+    SQLDsConsulta.Params.ParamByName('pCodigo').AsString := Self.Codigo;
+    try
+      SQLDsConsulta.ExecSQL;
+      Result := True;
+    except
+      Result := False;
+    end;
+  end;
+end;
 
 function TProdutoCrud.Pesquisa(pDesc: String): TProdutoCrud;
 begin
@@ -107,8 +107,8 @@ begin
   begin
     SQLDsConsulta.Close;
     SQLDsConsulta.CommandText := '';
-    SQLDsConsulta.CommandText := 'SELECT DESCRICAO '+
-                                 'FROM PRODUTOS           '+
+    SQLDsConsulta.CommandText := 'SELECT CODIGO, DESCRICAO '+
+                                 'FROM PRODUTOS            '+
                                  'WHERE DESCRICAO LIKE '+QuotedStr('%'+pDesc);
     SQLDsConsulta.Open;
     if SQLDsConsulta.IsEmpty then

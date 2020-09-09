@@ -67,29 +67,29 @@ type
     cdsImpItensCOD_PEDIDO: TIntegerField;
     cdsImpItensCOD_PRODUTO: TIntegerField;
     cdsImpItensQTD: TIntegerField;
-    cdsImpItensVR_UNIT: TFMTBCDField;
-    cdsImpItensTOT_ITEM: TFMTBCDField;
     cdsImpItensDESCRICAO: TStringField;
     cdsPedSelecionadoCODIGO: TIntegerField;
     cdsPedSelecionadoREFERENCIA: TIntegerField;
     cdsPedSelecionadoNUM_Pedido: TIntegerField;
-    cdsPedSelecionadoData_Emissao: TSQLTimeStampField;
     cdsPedSelecionadoCod_Cliente: TIntegerField;
     cdsPedSelecionadoRAZAO: TStringField;
     cdsPedSelecionadoTIP_OPERACAO: TStringField;
     ppLabel15: TppLabel;
     ppDBText11: TppDBText;
-    cdsPedSelecionadoTOT_Pedido: TFMTBCDField;
     btnImprimeTodos: TBitBtn;
     cdsPedidosCODIGO: TIntegerField;
     cdsPedidosREFERENCIA: TIntegerField;
     cdsPedidosNUM_Pedido: TIntegerField;
-    cdsPedidosData_Emissao: TSQLTimeStampField;
-    cdsPedidosTOT_Pedido: TFMTBCDField;
     cdsPedidosCod_Cliente: TIntegerField;
     cdsPedidosRAZAO: TStringField;
     cdsPedidosTIP_OPERACAO: TStringField;
     btnFechar: TBitBtn;
+    cdsPedidosData_Emissao: TDateTimeField;
+    cdsPedSelecionadoData_Emissao: TDateTimeField;
+    cdsPedidosTOT_Pedido: TBCDField;
+    cdsImpItensVR_UNIT: TBCDField;
+    cdsImpItensTOT_ITEM: TBCDField;
+    cdsPedSelecionadoTOT_Pedido: TBCDField;
     procedure FormShow(Sender: TObject);
     procedure btnImprimirClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -97,6 +97,7 @@ type
     procedure cdsPedidosAfterScroll(DataSet: TDataSet);
     procedure btnFecharClick(Sender: TObject);
     procedure cdsPedSelecionadoAfterScroll(DataSet: TDataSet);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -187,6 +188,12 @@ procedure TFrmRelPedidos.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caFree;
   Release;
+end;
+
+procedure TFrmRelPedidos.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if key = #27 then
+    close;
 end;
 
 end.

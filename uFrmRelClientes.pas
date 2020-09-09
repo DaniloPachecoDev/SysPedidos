@@ -50,6 +50,7 @@ type
     procedure btnImprimirClick(Sender: TObject);
     procedure btnImprimeTodosClick(Sender: TObject);
     procedure btnFecharClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -101,6 +102,12 @@ procedure TFrmRelClientes.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caFree;
   Release;
+end;
+
+procedure TFrmRelClientes.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if key = #27 then
+    close;
 end;
 
 end.

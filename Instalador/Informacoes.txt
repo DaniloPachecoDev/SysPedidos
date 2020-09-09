@@ -1,0 +1,13 @@
+************************************
+*  INFORMACOES APOS A INSTALACAO   *
+************************************
+
+1. Certifique-se que na maquina contenha uma versao do MSSQL Server (Preferencia 2016)
+
+2. Adicione ao MSSQL Server o banco de dados de uso do sistema atraves do arquivo BASE.BAK
+
+3. Abra o arquivo "base.ini" e adicione os parametros de conexao.
+
+4. Arquivos base.ini e BASE.BAK estarao disponiveis apos o termino da instalacao.
+
+5. Apos verificado os itens acima abra o sistema atraves do atalho.

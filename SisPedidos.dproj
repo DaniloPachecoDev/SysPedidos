@@ -81,7 +81,7 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <Icon_MainIcon>SisPedidos_Icon.ico</Icon_MainIcon>
+        <Icon_MainIcon>SisPedidos_Icon3.ico</Icon_MainIcon>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -95,7 +95,7 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <Icon_MainIcon>SisPedidos_Icon1.ico</Icon_MainIcon>
+        <Icon_MainIcon>SisPedidos_Icon2.ico</Icon_MainIcon>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -105,12 +105,12 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="uFrmPrincipal.pas">
-            <Form>FrmPrincipal</Form>
-        </DCCReference>
         <DCCReference Include="uDados.pas">
             <Form>DmPrincipal</Form>
             <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="uFrmPrincipal.pas">
+            <Form>FrmPrincipal</Form>
         </DCCReference>
         <DCCReference Include="uCrudCliente.pas"/>
         <DCCReference Include="uFrmPadrao.pas">

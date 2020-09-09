@@ -11,9 +11,9 @@ object DmPrincipal: TDmPrincipal
       'SchemaOverride=sa.dbo'
       'DriverName=MSSQL'
       'HostName=FTS-DEV-FIS-NTB\LOCAL'
-      'DataBase=Base'
-      'User_Name=sa'
-      'Password=dan021130'
+      'DataBase='
+      'User_Name='
+      'Password='
       'BlobSize=-1'
       'ErrorResourceFile='
       'LocaleCode=0000'
@@ -22,14 +22,11 @@ object DmPrincipal: TDmPrincipal
       'Prepare SQL=False'
       'ConnectTimeout=60'
       'Mars_Connection=False')
-    Connected = True
     Left = 112
     Top = 56
   end
   object SQLDsConsulta: TSQLDataSet
-    CommandText = 
-      'SELECT COD_PEDIDO, FORMA_PAG, DAT_VENCIMENTO, VAL_PARCELA FROM P' +
-      'ARPED'
+    CommandText = 'SELECT * FROM ITEMPED'
     MaxBlobSize = -1
     Params = <>
     SQLConnection = SQLConn

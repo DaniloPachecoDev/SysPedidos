@@ -1,0 +1,87 @@
+object DmPrincipal: TDmPrincipal
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 357
+  Width = 559
+  object SQLConn: TSQLConnection
+    ConnectionName = 'MSSQLConnection'
+    DriverName = 'MSSQL'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverUnit=Data.DBXMSSQL'
+      
+        'DriverPackageLoader=TDBXDynalinkDriverLoader,DBXCommonDriver240.' +
+        'bpl'
+      
+        'DriverAssemblyLoader=Borland.Data.TDBXDynalinkDriverLoader,Borla' +
+        'nd.Data.DbxCommonDriver,Version=24.0.0.0,Culture=neutral,PublicK' +
+        'eyToken=91d62ebb5b0d1b1b'
+      
+        'MetaDataPackageLoader=TDBXMsSqlMetaDataCommandFactory,DbxMSSQLDr' +
+        'iver240.bpl'
+      
+        'MetaDataAssemblyLoader=Borland.Data.TDBXMsSqlMetaDataCommandFact' +
+        'ory,Borland.Data.DbxMSSQLDriver,Version=24.0.0.0,Culture=neutral' +
+        ',PublicKeyToken=91d62ebb5b0d1b1b'
+      'GetDriverFunc=getSQLDriverMSSQL'
+      'LibraryName=dbxmss.dll'
+      'VendorLib=sqlncli10.dll'
+      'VendorLibWin64=sqlncli10.dll'
+      'HostName=ServerName'
+      'MaxBlobSize=-1'
+      'OSAuthentication=False'
+      'PrepareSQL=True'
+      'SchemaOverride=sa.dbo'
+      'DriverName=MSSQL'
+      'DataBase='
+      'User_Name='
+      'Password='
+      'BlobSize=-1'
+      'ErrorResourceFile='
+      'LocaleCode=0000'
+      'IsolationLevel=ReadCommitted'
+      'OS Authentication=False'
+      'Prepare SQL=False'
+      'ConnectTimeout=60'
+      'Mars_Connection=False')
+    Left = 112
+    Top = 56
+  end
+  object SQLDsConsulta: TSQLDataSet
+    CommandText = 'SELECT * FROM ITEMPED'
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConn
+    Left = 112
+    Top = 128
+  end
+  object SQLDsAux: TSQLDataSet
+    CommandText = 
+      'SELECT COD_PEDIDO, FORMA_PAG, DAT_VENCIMENTO, VAL_PARCELA FROM P' +
+      'ARPED'
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = SQLConn
+    Left = 216
+    Top = 144
+  end
+  object ADOConn: TADOConnection
+    LoginPrompt = False
+    Provider = 'SQLNCLI10.1'
+    Left = 368
+    Top = 64
+  end
+  object ADODsConsulta: TADODataSet
+    Connection = ADOConn
+    ParamCheck = False
+    Parameters = <>
+    Left = 376
+    Top = 144
+  end
+  object ADODsAux: TADODataSet
+    Connection = ADOConn
+    Parameters = <>
+    Left = 368
+    Top = 232
+  end
+end
